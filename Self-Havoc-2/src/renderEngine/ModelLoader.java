@@ -1,6 +1,7 @@
 package renderEngine;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +27,14 @@ public class ModelLoader {
 	 * @param positions Position where the data is to be loaded in the VAO
 	 * @return RawModel Returns the VAO
 	 */
-	public RawModel loadToVAO(float[] positions) {
+	public RawModel loadToVAO(float[] positions, int[] indices) {
 //		Create a Vertex Array Object
 		int VAOid = createVAO();
+		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, positions);
 		unbindVAO();
 //		Positions divided by 3 since triangle has three vertices
-		return new RawModel(VAOid, positions.length/3);
+		return new RawModel(VAOid, indices.length);
 	}
 	
 	/**
@@ -77,6 +79,35 @@ public class ModelLoader {
 	private FloatBuffer storeDataInFloatBuffer(float[] data) {
 //		Create a float buffer
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
+//		Store data to buffer
+		buffer.put(data);
+//		Make the buffer readable
+		buffer.flip();
+		return buffer;
+	}
+	
+	/**
+	 * Binds data onto the indices buffer
+	 * @param indices Indices where the data has to be stored
+	 */
+	private void bindIndicesBuffer(int[] indices) {
+		int VBOid = GL15.glGenBuffers();
+		VBOs.add(VBOid);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, VBOid);
+//		Convert data to IntBuffer type
+		IntBuffer buffer = storeDataInIntBuffer(indices);
+//		Store to VBO
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+	}
+	
+	/**
+	 * Convert data of int type to IntBuffer (needed for Indices Buffer)
+	 * @param data Data to be converted
+	 * @return buffer
+	 */
+	private IntBuffer storeDataInIntBuffer(int[] data) {
+//		Create an IntBuffer
+		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 //		Store data to buffer
 		buffer.put(data);
 //		Make the buffer readable
