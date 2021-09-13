@@ -2,11 +2,13 @@ package mainEngineExec;
 
 import org.lwjgl.opengl.Display;
 
+import models.RawModel;
+import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.ModelLoader;
 import renderEngine.ModelRenderer;
-import renderEngine.RawModel;
 import shaders.StaticShader;
+import textures.ModelTexture;
 
 /**
  * Main game class
@@ -41,8 +43,19 @@ public class Main {
 				3,1,2
 		};
 		
+		float[] textureCoords = {
+			0,0,
+			0,1,
+			1,1,
+			1,0
+		};
+		
 //		Loading positions to VAO
-		RawModel model = modelLoader.loadToVAO(vertices, indices);
+		RawModel model = modelLoader.loadToVAO(vertices, indices, textureCoords);
+//		Creating a new model texture
+		ModelTexture texture = new ModelTexture(modelLoader.loadTexture("texture2"));
+//		Creating a textured model
+		TexturedModel texturedModel = new TexturedModel(model, texture);
 		
 //		Main game loop
 		while(!Display.isCloseRequested())
@@ -53,7 +66,7 @@ public class Main {
 //			Activate the shaders
 			shader.start();
 //			Render the object
-			modelRenderer.renderModel(model);
+			modelRenderer.renderModel(texturedModel);
 //			Stop the shaders
 			shader.stop();
 //			Update the display

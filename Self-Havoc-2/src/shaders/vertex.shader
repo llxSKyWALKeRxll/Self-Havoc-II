@@ -6,11 +6,12 @@
 #version 400 core
 
 in vec3 pos;
+in vec2 textureCoords;
 
-out vec3 col;
+out vec2 outputTextureCoords;
 
 void main()
 {
 	gl_Position = vec4(pos, 1.0);
-	col = vec3(pos.x+0.4, 0.7, pos.z+0.6);
+	outputTextureCoords = textureCoords;
 }

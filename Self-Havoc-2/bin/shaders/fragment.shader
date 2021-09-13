@@ -5,11 +5,13 @@
 
 #version 400 core
 
-in vec3 col;
+in vec2 outputTextureCoords;
 
 out vec4 pix_col;
 
+uniform sampler2D textureSampler;
+
 void main()
 {
-	pix_col = vec4(col, 1.0);
+	pix_col = texture(textureSampler, outputTextureCoords);
 }

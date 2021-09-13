@@ -17,6 +17,7 @@ public class StaticShader extends ShaderProgram{
 	protected void bindAttributes() {
 //		Bind attribute to variable in the shader (vertex)
 		super.bindAttribute(0, "pos");
+		super.bindAttribute(1, "textureCoords");
 	}
 	
 	
