@@ -24,9 +24,9 @@ public class DisplayManager {
 	public static void createDisplay() {
 		
 //		Version 3.2 of OpenGL is passed as the parameter
-		ContextAttribs attributes = new ContextAttribs(3,2);
-		attributes.withForwardCompatible(true);
-		attributes.withProfileCore(true);
+		ContextAttribs attributes = new ContextAttribs(3,2)
+				.withForwardCompatible(true)
+				.withProfileCore(true);
 		
 		try {
 			

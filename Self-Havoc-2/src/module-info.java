@@ -16,4 +16,5 @@ module selfHavoc2 {
 	requires jdk.unsupported;
 	requires java.desktop;
 	requires slick.util;
+	requires lwjgl.util;
 }

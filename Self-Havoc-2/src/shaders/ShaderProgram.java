@@ -2,9 +2,13 @@ package shaders;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 /**
  * A generic template class for shaders. Shaders can be loaded and debugged by using this class.
@@ -14,6 +18,7 @@ import org.lwjgl.opengl.GL20;
 public abstract class ShaderProgram {
 	
 	private int programId, vertexShaderId, fragmentShaderId;
+	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
 	public ShaderProgram(String vertexFile, String fragmentFile) {
 		vertexShaderId = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
@@ -22,9 +27,69 @@ public abstract class ShaderProgram {
 		programId = GL20.glCreateProgram();
 		GL20.glAttachShader(programId, vertexShaderId);
 		GL20.glAttachShader(programId, fragmentShaderId);
+		bindAttributes();
 		GL20.glLinkProgram(programId);
 		GL20.glValidateProgram(programId);
-		bindAttributes();
+		getAllUniformLocations();
+	}
+	
+	/**
+	 * Fetches the location of all uniform variables currently attached to the program object
+	 */
+	protected abstract void getAllUniformLocations();
+	
+	/**
+	 * Fetches the location of the uniform variable passed as the parameter
+	 * @param varname Uniform variable whose location is to be fetched
+	 * @return int Location
+	 */
+	protected int getUniformLocation(String varname)
+	{
+		return GL20.glGetUniformLocation(programId, varname);
+	}
+	
+	/**
+	 * Loads the passed float value onto the uniform variable for the shader object
+	 * @param location Location where the value is to be attached
+	 * @param val Value that is to be loaded
+	 */
+	protected void loadUniformFloat(int location, float val)
+	{
+		GL20.glUniform1f(location, val);
+	}
+	
+	/**
+	 * Loads the passed vector value onto the uniform variable for the shader object
+	 * @param location Location where the value is to be attached
+	 * @param vector Value that is to be loaded
+	 */
+	protected void loadUniformVector(int location, Vector3f vector)
+	{
+		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+	
+	/**
+	 * Loads the passed boolean value onto the uniform variable for the shader object
+	 * @param location Location where the value is to be attached
+	 * @param val Value that is to be loaded
+	 */
+	protected void loadUniformBoolean(int location, boolean val)
+	{
+		float intVal = 0;
+		if(val) intVal = 1;
+		GL20.glUniform1f(location, intVal);
+	}
+	
+	/**
+	 * Loads the passed matrix value onto the uniform variable for the shader object
+	 * @param location Location where the value is to be attached
+	 * @param matrix Value that is to be loaded
+	 */
+	protected void loadUniformMatrix(int location, Matrix4f matrix)
+	{
+		matrix.store(matrixBuffer);
+		matrixBuffer.flip();
+		GL20.glUniformMatrix4(location, false, matrixBuffer);
 	}
 	
 	/**
