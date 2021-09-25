@@ -12,10 +12,12 @@ out vec3 colour;
 out vec2 outputTextureCoords;
 
 uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
 
 void main()
 {
-	gl_Position = transformationMatrix * vec4(pos, 1.0);
+	gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(pos, 1.0);
 	outputTextureCoords = textureCoords;
 	colour = vec3(pos.x+0.5, 0.0, pos.y+0.5);
 }
