@@ -18,7 +18,12 @@ import models.RawModel;
  */
 public class OBJLoader {
 	
-//	Read the obj file associated with the passed model
+	/**
+	 * Reads the obj file associated with the passed model
+	 * @param filePath Path containing the obj file
+	 * @param loader ModelLoader object
+	 * @return
+	 */
 	public static RawModel loadObjModel(String filePath, ModelLoader loader)
 	{
 		FileReader fileReader = null;
@@ -124,11 +129,20 @@ public class OBJLoader {
 			indicesArray[i] = indices.get(i);
 		}
 		
-		return loader.loadToVAO(verticesArray, indicesArray, texturesArray);
+		return loader.loadToVAO(verticesArray, indicesArray, texturesArray, normalsArray);
 		
 	}
 	
 //	Process each vertex individually
+	/**
+	 * Processes each vertex individually
+	 * @param vertexData Content of the obj file that was processed initially into a structured format
+	 * @param indices Contains the indices coordinates
+	 * @param textures Contains the texture coordinates
+	 * @param normals Contains the normal coordinates
+	 * @param texturesArray Texture coordinates to be stored inside this array
+	 * @param normalsArray Normal coordinates to be stored inside this array
+	 */
 	private static void processVertex(String[] vertexData, List<Integer> indices,
 			List<Vector2f> textures, List<Vector3f> normals, float[] texturesArray,
 			float[] normalsArray) 

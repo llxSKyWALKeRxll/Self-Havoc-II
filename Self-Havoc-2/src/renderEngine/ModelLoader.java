@@ -35,7 +35,8 @@ public class ModelLoader {
 	 * @param positions Position where the data is to be loaded in the VAO
 	 * @return RawModel Returns the VAO
 	 */
-	public RawModel loadToVAO(float[] positions, int[] indices, float[] textureCoords) {
+	public RawModel loadToVAO(float[] positions, int[] indices, float[] textureCoords,
+			float[] normals) {
 //		Create a Vertex Array Object
 		int VAOid = createVAO();
 		bindIndicesBuffer(indices);
@@ -43,6 +44,8 @@ public class ModelLoader {
 		storeDataInAttributeList(0, positions, 3);
 //		Store texture coords to attribute list
 		storeDataInAttributeList(1, textureCoords, 2);
+//		Store normal coords to attribute list
+		storeDataInAttributeList(2, normals, 3);
 		unbindVAO();
 //		Positions divided by 3 since triangle has three vertices
 		return new RawModel(VAOid, indices.length);

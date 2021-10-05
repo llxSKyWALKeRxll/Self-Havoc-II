@@ -7,17 +7,23 @@
 
 in vec3 pos;
 in vec2 textureCoords;
+in vec3 normal;
 
-out vec3 colour;
 out vec2 outputTextureCoords;
+out vec3 surfaceNormal;
+out vec3 toLightVector;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+uniform vec3 lightPosition;
 
 void main()
 {
-	gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(pos, 1.0);
+	vec4 worldPosition = transformationMatrix * vec4(pos, 1.0);
+	gl_Position = projectionMatrix * viewMatrix * worldPosition;
 	outputTextureCoords = textureCoords;
-	colour = vec3(pos.x+0.5, 0.0, pos.y+0.5);
+	
+	surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
+	toLightVector = lightPosition - worldPosition.xyz; 
 }
