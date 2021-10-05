@@ -10,6 +10,7 @@ import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.ModelLoader;
 import renderEngine.ModelRenderer;
+import renderEngine.OBJLoader;
 import shaders.StaticShader;
 import textures.ModelTexture;
 
@@ -40,114 +41,116 @@ public class Main {
 //				0.5f, 0.5f, 0,
 //		  };
 		
-		float[] vertices = {
-				-0.5f,0.5f,-0.5f,	
-				-0.5f,-0.5f,-0.5f,	
-				0.5f,-0.5f,-0.5f,	
-				0.5f,0.5f,-0.5f,		
-				
-				-0.5f,0.5f,0.5f,	
-				-0.5f,-0.5f,0.5f,	
-				0.5f,-0.5f,0.5f,	
-				0.5f,0.5f,0.5f,
-				
-				0.5f,0.5f,-0.5f,	
-				0.5f,-0.5f,-0.5f,	
-				0.5f,-0.5f,0.5f,	
-				0.5f,0.5f,0.5f,
-				
-				-0.5f,0.5f,-0.5f,	
-				-0.5f,-0.5f,-0.5f,	
-				-0.5f,-0.5f,0.5f,	
-				-0.5f,0.5f,0.5f,
-				
-				-0.5f,0.5f,0.5f,
-				-0.5f,0.5f,-0.5f,
-				0.5f,0.5f,-0.5f,
-				0.5f,0.5f,0.5f,
-				
-				-0.5f,-0.5f,0.5f,
-				-0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,0.5f
-		};
-		
-//		Object indices
+//		float[] vertices = {
+//				-0.5f,0.5f,-0.5f,	
+//				-0.5f,-0.5f,-0.5f,	
+//				0.5f,-0.5f,-0.5f,	
+//				0.5f,0.5f,-0.5f,		
+//				
+//				-0.5f,0.5f,0.5f,	
+//				-0.5f,-0.5f,0.5f,	
+//				0.5f,-0.5f,0.5f,	
+//				0.5f,0.5f,0.5f,
+//				
+//				0.5f,0.5f,-0.5f,	
+//				0.5f,-0.5f,-0.5f,	
+//				0.5f,-0.5f,0.5f,	
+//				0.5f,0.5f,0.5f,
+//				
+//				-0.5f,0.5f,-0.5f,	
+//				-0.5f,-0.5f,-0.5f,	
+//				-0.5f,-0.5f,0.5f,	
+//				-0.5f,0.5f,0.5f,
+//				
+//				-0.5f,0.5f,0.5f,
+//				-0.5f,0.5f,-0.5f,
+//				0.5f,0.5f,-0.5f,
+//				0.5f,0.5f,0.5f,
+//				
+//				-0.5f,-0.5f,0.5f,
+//				-0.5f,-0.5f,-0.5f,
+//				0.5f,-0.5f,-0.5f,
+//				0.5f,-0.5f,0.5f
+//		};
+//		
+////		Object indices
+////		int[] indices = {
+////				0,1,3,
+////				3,1,2
+////		};
+//		
 //		int[] indices = {
-//				0,1,3,
-//				3,1,2
+//				0,1,3,	
+//				3,1,2,	
+//				4,5,7,
+//				7,5,6,
+//				8,9,11,
+//				11,9,10,
+//				12,13,15,
+//				15,13,14,	
+//				16,17,19,
+//				19,17,18,
+//				20,21,23,
+//				23,21,22
 //		};
-		
-		int[] indices = {
-				0,1,3,	
-				3,1,2,	
-				4,5,7,
-				7,5,6,
-				8,9,11,
-				11,9,10,
-				12,13,15,
-				15,13,14,	
-				16,17,19,
-				19,17,18,
-				20,21,23,
-				23,21,22
-		};
-		
-//		float[] textureCoords = {
-//			0,0,
-//			0,1,
-//			1,1,
-//			1,0
+//		
+////		float[] textureCoords = {
+////			0,0,
+////			0,1,
+////			1,1,
+////			1,0
+////		};
+//		
+//		float [] textureCoords = {
+//				0,0,
+//				0,1,
+//				1,1,
+//				1,0,			
+//				0,0,
+//				0,1,
+//				1,1,
+//				1,0,			
+//				0,0,
+//				0,1,
+//				1,1,
+//				1,0,
+//				0,0,
+//				0,1,
+//				1,1,
+//				1,0,
+//				0,0,
+//				0,1,
+//				1,1,
+//				1,0,
+//				0,0,
+//				0,1,
+//				1,1,
+//				1,0
 //		};
-		
-		float [] textureCoords = {
-				0,0,
-				0,1,
-				1,1,
-				1,0,			
-				0,0,
-				0,1,
-				1,1,
-				1,0,			
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0
-		};
 		
 //		Loading positions to VAO
-		RawModel model = modelLoader.loadToVAO(vertices, indices, textureCoords);
+//		RawModel model = modelLoader.loadToVAO(vertices, indices, textureCoords);
+		RawModel model = OBJLoader.loadObjModel("tree2", modelLoader);
 //		Creating a new model texture
-		ModelTexture texture = new ModelTexture(modelLoader.loadTexture("texture2"));
+		ModelTexture texture = new ModelTexture(modelLoader.loadTexture("texture3"));
 //		Creating a textured model
 		TexturedModel texturedModel = new TexturedModel(model, texture);
+//		TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(modelLoader.loadTexture("stallTexture")));
 		
-		Entity entity1 = new Entity(texturedModel, new Vector3f(0,0,-2f),0,0,0,1);
-		Entity entity2 = new Entity(texturedModel, new Vector3f(-3f,0,-4f),0,0,0,1);
-		Entity entity3 = new Entity(texturedModel, new Vector3f(3f,0,-4f),0,0,0,1);
+		Entity entity1 = new Entity(texturedModel, new Vector3f(0,-2f,-6f),0,0,0,1);
+//		Entity entity2 = new Entity(texturedModel, new Vector3f(-3f,0,-4f),0,0,0,1);
+//		Entity entity3 = new Entity(texturedModel, new Vector3f(3f,0,-4f),0,0,0,1);
 		
 		Camera camera = new Camera();
 		
 //		Main game loop
 		while(!Display.isCloseRequested())
 		{
-//			entity.increasePosition(0, 0, -0.05f);
+//			entity1.increasePosition(0, -1f, -0.05f);
 			camera.move();
-			entity1.increaseRotation(1f, 1f, 0);
-			entity2.increaseRotation(0, 1f, 0);
-			entity3.increaseRotation(1f, 0, 0);
+			entity1.increaseRotation(0, 1f, 0);
+//			entity2.increaseRotation(0, 1f, 0);
+//			entity3.increaseRotation(1f, 0, 0);
 //			Prepare the Renderer / Color
 			modelRenderer.prepare();
 //			Activate the shaders
@@ -155,8 +158,8 @@ public class Main {
 			shader.loadViewMatrix(camera);
 //			Render the object
 			modelRenderer.renderModel(entity1, shader);
-			modelRenderer.renderModel(entity2, shader);
-			modelRenderer.renderModel(entity3, shader);
+//			modelRenderer.renderModel(entity2, shader);
+//			modelRenderer.renderModel(entity3, shader);
 //			Stop the shaders
 			shader.stop();
 //			Update the display
