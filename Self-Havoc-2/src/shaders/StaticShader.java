@@ -16,6 +16,8 @@ public class StaticShader extends ShaderProgram{
 	private int viewMatrixLocation;
 	private int lightPositionLocation;
 	private int lightColourLocation;
+	private int shineDamperLocation;
+	private int reflectivityLocation;
 
 	public StaticShader() {
 //		Call parent constructor to create, load and read shaders
@@ -43,6 +45,8 @@ public class StaticShader extends ShaderProgram{
 		viewMatrixLocation = super.getUniformLocation("viewMatrix");
 		lightPositionLocation = super.getUniformLocation("lightPosition");
 		lightColourLocation = super.getUniformLocation("lightColour");
+		shineDamperLocation = super.getUniformLocation("shineDamper");
+		reflectivityLocation = super.getUniformLocation("reflectivity");
 	}
 	
 	/**
@@ -81,6 +85,17 @@ public class StaticShader extends ShaderProgram{
 	{
 		super.loadUniformVector(lightPositionLocation, light.getPosition());
 		super.loadUniformVector(lightColourLocation, light.getColour());
+	}
+	
+	/**
+	 * Loads parameters necessary for specular lighting onto the shader
+	 * @param damper Damper factor
+	 * @param reflectivity Reflectivity factor
+	 */
+	public void loadShineFactors(float damper, float reflectivity)
+	{
+		super.loadUniformFloat(shineDamperLocation, damper);
+		super.loadUniformFloat(reflectivityLocation, reflectivity);
 	}
 	
 

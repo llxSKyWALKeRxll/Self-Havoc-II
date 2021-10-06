@@ -140,6 +140,14 @@ public class Main {
 		TexturedModel texturedModel2 = new TexturedModel(model2, texture);
 //		TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(modelLoader.loadTexture("stallTexture")));
 		
+		ModelTexture lightApplyTexture1 = texturedModel1.getModelTexture();
+		lightApplyTexture1.setShineDamper(10);
+		lightApplyTexture1.setReflectivity(1);
+		
+		ModelTexture lightApplyTexture2 = texturedModel2.getModelTexture();
+		lightApplyTexture2.setShineDamper(10);
+		lightApplyTexture2.setReflectivity(1);
+		
 		Entity entity1 = new Entity(texturedModel1, new Vector3f(0,-2f,-10f),0,0,0,1);
 		Entity entity2 = new Entity(texturedModel2, new Vector3f(-35f,-4f,-80f),0,0,0,1);
 		Entity entity3 = new Entity(texturedModel2, new Vector3f(35f,-4f,-80f),0,0,0,1);

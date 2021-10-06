@@ -11,6 +11,7 @@ import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import shaders.StaticShader;
+import textures.ModelTexture;
 import utils.Maths;
 
 /**
@@ -60,6 +61,8 @@ public class ModelRenderer {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), 
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
+		ModelTexture texture = texturedModel.getModelTexture();
+		shader.loadShineFactors(texture.getShineDamper(), texture.getReflectivity());
 //		Activate the texture that is to be rendered
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getModelTexture().getTextureId());
