@@ -15,9 +15,10 @@ import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import renderEngine.ModelLoader;
-import renderEngine.ModelRenderer;
+import renderEngine.EntityRenderer;
 import renderEngine.OBJLoader;
 import shaders.StaticShader;
+import terrains.Terrain;
 import textures.ModelTexture;
 
 /**
@@ -34,10 +35,14 @@ public class Main {
 		ModelLoader modelLoader = new ModelLoader();
 		
 		
-		RawModel model1 = OBJLoader.loadObjModel("tree2", modelLoader);
-		RawModel model2 = OBJLoader.loadObjModel("tree1", modelLoader);
+		RawModel model1 = OBJLoader.loadObjModel("tree1", modelLoader);
+		RawModel model2 = OBJLoader.loadObjModel("tree2", modelLoader);
+		
+		ModelTexture grassTexture1 = new ModelTexture(modelLoader.loadTexture("grass1"));
+		Terrain terrain1 = new Terrain(0,-1,modelLoader,grassTexture1);
+		Terrain terrain2 = new Terrain(-1,-1,modelLoader,grassTexture1);
 
-		ModelTexture texture = new ModelTexture(modelLoader.loadTexture("texture3"));
+		ModelTexture texture = new ModelTexture(modelLoader.loadTexture("treeTexture1"));
 
 		TexturedModel texturedModel1 = new TexturedModel(model1, texture);
 		TexturedModel texturedModel2 = new TexturedModel(model2, texture);
@@ -46,27 +51,32 @@ public class Main {
 		lightApplyTexture1.setShineDamper(10);
 		lightApplyTexture1.setReflectivity(1);
 		
-		ModelTexture lightApplyTexture2 = texturedModel2.getModelTexture();
+		ModelTexture lightApplyTexture2 = texturedModel1.getModelTexture();
 		lightApplyTexture2.setShineDamper(10);
 		lightApplyTexture2.setReflectivity(1);
 		
-		Entity entity1 = new Entity(texturedModel1, new Vector3f(0,-2f,-10f),0,0,0,1);
-		Entity entity2 = new Entity(texturedModel2, new Vector3f(-35f,-4f,-80f),0,0,0,1);
-		Entity entity3 = new Entity(texturedModel2, new Vector3f(35f,-4f,-80f),0,0,0,1);
+//		Entity entity1 = new Entity(texturedModel1, new Vector3f(0,0f,-10f),0,0,0,0.5f);
+//		Entity entity2 = new Entity(texturedModel2, new Vector3f(-35f,0f,-80f),0,0,0,1);
+//		Entity entity3 = new Entity(texturedModel2, new Vector3f(35f,0f,-80f),0,0,0,1);
 		
 		Random random = new Random();
 		
-		List<Entity> modelChecking = new ArrayList<Entity>();
+		List<Entity> treeModels = new ArrayList<Entity>();
 		
-		for(int i=0; i<200; i++) {
-			float x = random.nextFloat()*100-50;
-			float y = random.nextFloat()*100-50;
-			float z = random.nextFloat()*-100;
-			modelChecking.add(new Entity(texturedModel1, new Vector3f(x,y,z), random.nextFloat()*180f,
-					random.nextFloat()*180f, 0f, 1f));
+		for(int i=0; i<600; i++) {
+			float x = random.nextFloat()*400-250;
+			float y = 0;
+			float z = random.nextFloat()*-500;
+			treeModels.add(new Entity(texturedModel1, new Vector3f(x,y,z), 0f,
+					0f, 0f, 0.2f));
+			x = random.nextFloat()*500-200;
+			y = 0;
+			z = random.nextFloat()*-300;
+			treeModels.add(new Entity(texturedModel2, new Vector3f(x,y,z), 0f,
+					0f, 0f, 1.4f));
 		}
 		
-		Light light = new Light(new Vector3f(0,0,-10), new Vector3f(1,1,1));
+		Light light = new Light(new Vector3f(3000,2000,2000), new Vector3f(1,1,1));
 		
 		Camera camera = new Camera();
 		
@@ -76,17 +86,20 @@ public class Main {
 		while(!Display.isCloseRequested())
 		{
 			camera.move();
-			entity1.increaseRotation(0, 1f, 0);
-			entity2.increaseRotation(0, 1f, 0);
-			entity3.increaseRotation(0, 1f, 0);
 			
-			for(Entity check: modelChecking) {
-				renderer.processEntity(check);
+			renderer.processTerrain(terrain1);
+			renderer.processTerrain(terrain2);
+//			entity1.increaseRotation(0, 1f, 0);
+//			entity2.increaseRotation(0, 1f, 0);
+//			entity3.increaseRotation(0, 1f, 0);
+//			
+			for(Entity tree: treeModels) {
+				renderer.processEntity(tree);
 			}
-			
-			renderer.processEntity(entity1);
-			renderer.processEntity(entity2);
-			renderer.processEntity(entity3);
+//			
+//			renderer.processEntity(entity1);
+//			renderer.processEntity(entity2);
+//			renderer.processEntity(entity3);
 
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();

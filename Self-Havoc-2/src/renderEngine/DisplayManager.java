@@ -15,7 +15,7 @@ import org.lwjgl.opengl.PixelFormat;
 public class DisplayManager {
 	
 	private static final int WIDTH = 1366, HEIGHT = 768;
-	private static final int FPS = 60;
+	private static final int FPS = 120;
 	private static final String TITLE = "Self Havoc-II";
 	
 	/**
