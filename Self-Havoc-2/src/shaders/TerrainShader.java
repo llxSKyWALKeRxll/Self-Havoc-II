@@ -1,6 +1,7 @@
 package shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Light;
@@ -23,6 +24,7 @@ public class TerrainShader extends ShaderProgram {
 	private int lightColourLocation;
 	private int shineDamperLocation;
 	private int reflectivityLocation;
+	private int skyColourLocation;
 
 	public TerrainShader() {
 //		Call parent constructor to create, load and read shaders
@@ -52,6 +54,17 @@ public class TerrainShader extends ShaderProgram {
 		lightColourLocation = super.getUniformLocation("lightColour");
 		shineDamperLocation = super.getUniformLocation("shineDamper");
 		reflectivityLocation = super.getUniformLocation("reflectivity");
+		skyColourLocation = super.getUniformLocation("skyColour");
+	}
+	
+	/**
+	 * Load the sky colour (for emulation of fog in game)
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
+	public void loadSkyColour(float r, float g, float b) {
+		super.loadUniformVector(skyColourLocation, new Vector3f(r,g,b));
 	}
 	
 	/**

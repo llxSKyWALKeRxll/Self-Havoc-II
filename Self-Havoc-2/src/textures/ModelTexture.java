@@ -11,10 +11,45 @@ public class ModelTexture {
 	private float shineDamper = 1;
 	private float reflectivity = 0;
 	
+	private boolean isTransparent = false;
+	private boolean useFakeLighting = false;
+	
 	public ModelTexture(int textureId) {
 		this.textureId = textureId;
 	}
 	
+	/**
+	 * Getter method to reveal as to whether a model is transparent or not
+	 * @return isTransparent 
+	 */
+	public boolean isTransparent() {
+		return isTransparent;
+	}
+
+	/**
+	 * Setter method for transparency of an object
+	 * @param isTransparent
+	 */
+	public void setTransparent(boolean isTransparent) {
+		this.isTransparent = isTransparent;
+	}
+
+	/**
+	 * Getter method for fake lighting of an object
+	 * @param useFakeLighting
+	 */
+	public boolean isUseFakeLighting() {
+		return useFakeLighting;
+	}
+
+	/**
+	 * Setter method for fake lighting of an object
+	 * @param useFakeLighting
+	 */
+	public void setUseFakeLighting(boolean useFakeLighting) {
+		this.useFakeLighting = useFakeLighting;
+	}
+
 	/**
 	 * Getter method for texture id
 	 * @return textureId

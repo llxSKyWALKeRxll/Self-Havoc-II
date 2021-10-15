@@ -1,6 +1,7 @@
 package shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Light;
@@ -18,6 +19,8 @@ public class StaticShader extends ShaderProgram{
 	private int lightColourLocation;
 	private int shineDamperLocation;
 	private int reflectivityLocation;
+	private int useFakeLightingLocation;
+	private int skyColourLocation;
 
 	public StaticShader() {
 //		Call parent constructor to create, load and read shaders
@@ -47,6 +50,26 @@ public class StaticShader extends ShaderProgram{
 		lightColourLocation = super.getUniformLocation("lightColour");
 		shineDamperLocation = super.getUniformLocation("shineDamper");
 		reflectivityLocation = super.getUniformLocation("reflectivity");
+		useFakeLightingLocation = super.getUniformLocation("useFakeLighting");
+		skyColourLocation = super.getUniformLocation("skyColour");
+	}
+	
+	/**
+	 * Load the sky colour (for emulation of fog in game)
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
+	public void loadSkyColour(float r, float g, float b) {
+		super.loadUniformVector(skyColourLocation, new Vector3f(r,g,b));
+	}
+	
+	/**
+	 * Load the passed value onto the fake lighting boolean
+	 * @param use
+	 */
+	public void loadFakeLightingBoolean(boolean use) {
+		super.loadUniformBoolean(useFakeLightingLocation, use);
 	}
 	
 	/**
