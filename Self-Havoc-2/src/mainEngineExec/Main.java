@@ -39,13 +39,13 @@ public class Main {
 		RawModel treeModel2 = OBJLoader.loadObjModel("tree2", modelLoader);
 		RawModel grassModel1 = OBJLoader.loadObjModel("grassObject1", modelLoader);
 		RawModel bushModel1 = OBJLoader.loadObjModel("bushObject1", modelLoader);
-//		RawModel flowerModel1 = OBJLoader.loadObjModel("flowerObject1", modelLoader);
+		RawModel flowerModel1 = OBJLoader.loadObjModel("grassObject1", modelLoader);
 		
 		ModelTexture groundTexture1 = new ModelTexture(modelLoader.loadTexture("grass1"));
 		ModelTexture grassTexture1 = new ModelTexture(modelLoader.loadTexture("grassTexture1"));
 		ModelTexture treeTexture1 = new ModelTexture(modelLoader.loadTexture("treeTexture1"));
 		ModelTexture bushTexture1 = new ModelTexture(modelLoader.loadTexture("bushTexture1"));
-//		ModelTexture flowerTexture1 = new ModelTexture(modelLoader.loadTexture("flowerTexture1"));
+		ModelTexture flowerTexture1 = new ModelTexture(modelLoader.loadTexture("flowerTexture1"));
 		
 		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,groundTexture1);
 		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,groundTexture1);
@@ -54,12 +54,14 @@ public class Main {
 		TexturedModel treeTexturedModel2 = new TexturedModel(treeModel2, treeTexture1);
 		TexturedModel grassTexturedModel1 = new TexturedModel(grassModel1, grassTexture1);
 		TexturedModel bushTexturedModel1 = new TexturedModel(bushModel1, bushTexture1);
-//		TexturedModel flowerTexturedModel1 = new TexturedModel(flowerModel1, flowerTexture1);
+		TexturedModel flowerTexturedModel1 = new TexturedModel(flowerModel1, flowerTexture1);
 		
 		grassTexturedModel1.getModelTexture().setTransparent(true);
 		bushTexturedModel1.getModelTexture().setTransparent(true);
+		flowerTexturedModel1.getModelTexture().setTransparent(true);
 		grassTexturedModel1.getModelTexture().setUseFakeLighting(true);
 		bushTexturedModel1.getModelTexture().setUseFakeLighting(true);
+		flowerTexturedModel1.getModelTexture().setUseFakeLighting(true);
 		
 		ModelTexture lightApplyTexture1 = treeTexturedModel1.getModelTexture();
 		lightApplyTexture1.setShineDamper(10);
@@ -80,7 +82,7 @@ public class Main {
 		List<Entity> treeModels = new ArrayList<Entity>();
 		List<Entity> grassModels = new ArrayList<Entity>();
 		List<Entity> bushModels = new ArrayList<Entity>();
-//		List<Entity> flowerModels = new ArrayList<Entity>();
+		List<Entity> flowerModels = new ArrayList<Entity>();
 		
 		for(int i=0; i<300; i++) {
 			float x = random.nextFloat()*300-230;
@@ -103,11 +105,11 @@ public class Main {
 			z = random.nextFloat()*-300;
 			bushModels.add(new Entity(bushTexturedModel1, new Vector3f(x,y,z), 0f,
 					0f, 0f, 0.3f));
-			x = random.nextFloat()*500-230;
+			x = random.nextFloat()*600-300;
 			y = 0;
-			z = random.nextFloat()*-300;
-//			flowerModels.add(new Entity(flowerTexturedModel1, new Vector3f(x,y,z), 0f,
-//					0f, 0f, 1f));
+			z = random.nextFloat()*-400;
+			flowerModels.add(new Entity(flowerTexturedModel1, new Vector3f(x,y,z), 0f,
+					0f, 0f, 0.8f));
 		}
 		
 		Light light = new Light(new Vector3f(20000,40000,20000), new Vector3f(1,1,1));
@@ -139,9 +141,9 @@ public class Main {
 				renderer.processEntity(bush);
 			}
 			
-//			for(Entity flower: flowerModels) {
-//				renderer.processEntity(flower);
-//			}
+			for(Entity flower: flowerModels) {
+				renderer.processEntity(flower);
+			}
 			
 //			renderer.processEntity(entity1);
 //			renderer.processEntity(entity1);
