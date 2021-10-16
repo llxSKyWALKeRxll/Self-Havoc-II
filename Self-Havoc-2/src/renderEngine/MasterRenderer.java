@@ -18,9 +18,8 @@ import shaders.TerrainShader;
 import terrains.Terrain;
 
 /**
- * Optimization class: Ensure that the same data is not loaded, binded & removed
- * n times to load different models
- * Similar to dynamic programming?
+ * Master rendering and optimization class: Ensure that the same data is not loaded, binded & removed
+ * n times to load different models.
  * @author Vansh Pratap Singh
  *
  */

@@ -46,7 +46,7 @@ public class Main {
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, 
 				gTexture, bTexture);
 		
-		RawModel mainPlayerModel1 = OBJLoader.loadObjModel("bunny", modelLoader);
+		RawModel mainPlayerModel1 = OBJLoader.loadObjModel("playerModel", modelLoader);
 		RawModel treeModel1 = OBJLoader.loadObjModel("tree1", modelLoader);
 		RawModel treeModel2 = OBJLoader.loadObjModel("tree2", modelLoader);
 		RawModel grassModel1 = OBJLoader.loadObjModel("grassObject1", modelLoader);
@@ -58,7 +58,7 @@ public class Main {
 		ModelTexture treeTexture1 = new ModelTexture(modelLoader.loadTexture("treeTexture1"));
 		ModelTexture bushTexture1 = new ModelTexture(modelLoader.loadTexture("bushTexture1"));
 		ModelTexture flowerTexture1 = new ModelTexture(modelLoader.loadTexture("flowerTexture1"));
-		ModelTexture mainPlayerTexture1 = new ModelTexture(modelLoader.loadTexture("texture3"));
+		ModelTexture mainPlayerTexture1 = new ModelTexture(modelLoader.loadTexture("playerTexture"));
 		
 		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,texturePack,blendMap);
 		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,texturePack,blendMap);
@@ -76,6 +76,7 @@ public class Main {
 		grassTexturedModel1.getModelTexture().setUseFakeLighting(true);
 		bushTexturedModel1.getModelTexture().setUseFakeLighting(true);
 		flowerTexturedModel1.getModelTexture().setUseFakeLighting(true);
+		mainPlayerTexturedModel1.getModelTexture().setUseFakeLighting(true);
 		
 		ModelTexture lightApplyTexture1 = treeTexturedModel1.getModelTexture();
 		lightApplyTexture1.setShineDamper(10);
@@ -122,11 +123,13 @@ public class Main {
 		
 		Light light = new Light(new Vector3f(20000,40000,20000), new Vector3f(1,1,1));
 		
-		Camera camera = new Camera();
-		
 		MasterRenderer renderer = new MasterRenderer();
 		
-		Player player = new Player(mainPlayerTexturedModel1, new Vector3f(100,0,-50),0,0,0,1);
+		Vector3f playerPosition = new Vector3f(0,0,0);
+		Player player = new Player(mainPlayerTexturedModel1, playerPosition,0,0,0,1);
+		player.setScale(0.2f);
+		
+		Camera camera = new Camera(player);
 		
 //		Main game loop
 		while(!Display.isCloseRequested())
