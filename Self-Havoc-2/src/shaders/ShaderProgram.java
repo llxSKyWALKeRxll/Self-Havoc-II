@@ -59,6 +59,16 @@ public abstract class ShaderProgram {
 	}
 	
 	/**
+	 * Loads the passed integer value onto the uniform variable for the shader object
+	 * @param location Location where the value is to be attached
+	 * @param val Value that is to be loaded
+	 */
+	protected void loadUniformInt(int location, int val)
+	{
+		GL20.glUniform1i(location, val);
+	}
+	
+	/**
 	 * Loads the passed vector value onto the uniform variable for the shader object
 	 * @param location Location where the value is to be attached
 	 * @param vector Value that is to be loaded

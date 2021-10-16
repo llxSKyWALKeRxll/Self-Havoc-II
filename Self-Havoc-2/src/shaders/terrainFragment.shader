@@ -13,14 +13,30 @@ in float visibility;
 
 out vec4 pix_col;
 
-uniform sampler2D textureSampler;
+uniform sampler2D backgroundTexture;
+uniform sampler2D rTexture;
+uniform sampler2D gTexture;
+uniform sampler2D bTexture;
+uniform sampler2D blendMap;
+
 uniform vec3 lightColour;
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
 
-void main()
+void main(void)
 {
+
+	vec4 blendMapColour = texture(blendMap,outputTextureCoords);
+	float backTextureQuantity = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
+	vec2 tiledCoords = outputTextureCoords * 40;
+	vec4 backgroundTextureColour = texture(backgroundTexture,tiledCoords) * backTextureQuantity;
+	vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
+	vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
+	vec4 bTextureColour = texture(bTexture,tiledCoords) * blendMapColour.b;
+	
+	vec4 finalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+
 	vec3 unitNormal = normalize(surfaceNormal);
 	vec3 unitLightVector = normalize(toLightVector);
 	
@@ -36,12 +52,6 @@ void main()
 	float dampedFactor = pow(specularFactor, shineDamper);
 	vec3 finalSpecular = dampedFactor * lightColour * reflectivity;
 	
-	vec4 textureColour = texture(textureSampler, outputTextureCoords);
-	if(textureColour.a < 0.5)
-	{
-		discard;
-	}
-	
-	pix_col = vec4(diffuse, 1.0) * textureColour + vec4(finalSpecular, 1.0);
+	pix_col = vec4(diffuse, 1.0) * finalColour + vec4(finalSpecular, 1.0);
 	pix_col = mix(vec4(skyColour,1.0),pix_col,visibility);
 }

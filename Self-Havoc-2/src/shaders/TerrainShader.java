@@ -25,6 +25,11 @@ public class TerrainShader extends ShaderProgram {
 	private int shineDamperLocation;
 	private int reflectivityLocation;
 	private int skyColourLocation;
+	private int backgroundTextureLocation;
+	private int rTextureLocation;
+	private int gTextureLocation;
+	private int bTextureLocation;
+	private int blendMapLocation;
 
 	public TerrainShader() {
 //		Call parent constructor to create, load and read shaders
@@ -55,6 +60,22 @@ public class TerrainShader extends ShaderProgram {
 		shineDamperLocation = super.getUniformLocation("shineDamper");
 		reflectivityLocation = super.getUniformLocation("reflectivity");
 		skyColourLocation = super.getUniformLocation("skyColour");
+		backgroundTextureLocation = super.getUniformLocation("backgroundTexture");
+		rTextureLocation = super.getUniformLocation("rTexture");
+		gTextureLocation = super.getUniformLocation("gTexture");
+		bTextureLocation = super.getUniformLocation("bTexture");
+		blendMapLocation = super.getUniformLocation("blendMap");
+	}
+	
+	/**
+	 * Binds various textures to the sampler2ds present in the shader
+	 */
+	public void connectTextureUnits() {
+		super.loadUniformInt(backgroundTextureLocation, 0);
+		super.loadUniformInt(rTextureLocation, 1);
+		super.loadUniformInt(gTextureLocation, 2);
+		super.loadUniformInt(bTextureLocation, 3);
+		super.loadUniformInt(blendMapLocation, 4);
 	}
 	
 	/**

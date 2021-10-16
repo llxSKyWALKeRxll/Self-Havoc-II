@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
@@ -20,6 +21,8 @@ import renderEngine.OBJLoader;
 import shaders.StaticShader;
 import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 /**
  * Main game class
@@ -34,7 +37,16 @@ public class Main {
 		
 		ModelLoader modelLoader = new ModelLoader();
 		
+		TerrainTexture backgroundTexture = new TerrainTexture(modelLoader.loadTexture("grass1"));
+		TerrainTexture rTexture = new TerrainTexture(modelLoader.loadTexture("sandPathway1"));
+		TerrainTexture gTexture = new TerrainTexture(modelLoader.loadTexture("pinkFlowers"));
+		TerrainTexture bTexture = new TerrainTexture(modelLoader.loadTexture("tilePathway1"));
+		TerrainTexture blendMap = new TerrainTexture(modelLoader.loadTexture("blendMap"));
 		
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, 
+				gTexture, bTexture);
+		
+		RawModel mainPlayerModel1 = OBJLoader.loadObjModel("bunny", modelLoader);
 		RawModel treeModel1 = OBJLoader.loadObjModel("tree1", modelLoader);
 		RawModel treeModel2 = OBJLoader.loadObjModel("tree2", modelLoader);
 		RawModel grassModel1 = OBJLoader.loadObjModel("grassObject1", modelLoader);
@@ -46,15 +58,17 @@ public class Main {
 		ModelTexture treeTexture1 = new ModelTexture(modelLoader.loadTexture("treeTexture1"));
 		ModelTexture bushTexture1 = new ModelTexture(modelLoader.loadTexture("bushTexture1"));
 		ModelTexture flowerTexture1 = new ModelTexture(modelLoader.loadTexture("flowerTexture1"));
+		ModelTexture mainPlayerTexture1 = new ModelTexture(modelLoader.loadTexture("texture3"));
 		
-		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,groundTexture1);
-		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,groundTexture1);
+		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,texturePack,blendMap);
+		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,texturePack,blendMap);
 
 		TexturedModel treeTexturedModel1 = new TexturedModel(treeModel1, treeTexture1);
 		TexturedModel treeTexturedModel2 = new TexturedModel(treeModel2, treeTexture1);
 		TexturedModel grassTexturedModel1 = new TexturedModel(grassModel1, grassTexture1);
 		TexturedModel bushTexturedModel1 = new TexturedModel(bushModel1, bushTexture1);
 		TexturedModel flowerTexturedModel1 = new TexturedModel(flowerModel1, flowerTexture1);
+		TexturedModel mainPlayerTexturedModel1 = new TexturedModel(mainPlayerModel1, mainPlayerTexture1);
 		
 		grassTexturedModel1.getModelTexture().setTransparent(true);
 		bushTexturedModel1.getModelTexture().setTransparent(true);
@@ -70,12 +84,6 @@ public class Main {
 		ModelTexture lightApplyTexture2 = treeTexturedModel1.getModelTexture();
 		lightApplyTexture2.setShineDamper(10);
 		lightApplyTexture2.setReflectivity(1);
-		
-
-//		Entity entity1 = new Entity(grassTexturedModel1, new Vector3f(0f,0f,-10f),0,0,0,0.5f);
-//		Entity entity1 = new Entity(texturedModel1, new Vector3f(0,0f,-10f),0,0,0,0.5f);
-//		Entity entity2 = new Entity(texturedModel2, new Vector3f(-35f,0f,-80f),0,0,0,1);
-//		Entity entity3 = new Entity(texturedModel2, new Vector3f(35f,0f,-80f),0,0,0,1);
 		
 		Random random = new Random();
 		
@@ -118,17 +126,18 @@ public class Main {
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
+		Player player = new Player(mainPlayerTexturedModel1, new Vector3f(100,0,-50),0,0,0,1);
+		
 //		Main game loop
 		while(!Display.isCloseRequested())
 		{
 			camera.move();
+			player.move();
 			
+			renderer.processEntity(player);
 			renderer.processTerrain(groundTerrain1);
 			renderer.processTerrain(groundTerrain2);
-//			entity1.increaseRotation(0, 1f, 0);
-//			entity2.increaseRotation(0, 1f, 0);
-//			entity3.increaseRotation(0, 1f, 0);
-//			
+			
 			for(Entity tree: treeModels) {
 				renderer.processEntity(tree);
 			}
@@ -144,11 +153,6 @@ public class Main {
 			for(Entity flower: flowerModels) {
 				renderer.processEntity(flower);
 			}
-			
-//			renderer.processEntity(entity1);
-//			renderer.processEntity(entity1);
-//			renderer.processEntity(entity2);
-//			renderer.processEntity(entity3);
 
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();

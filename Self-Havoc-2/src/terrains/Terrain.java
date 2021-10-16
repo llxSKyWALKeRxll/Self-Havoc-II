@@ -3,6 +3,8 @@ package terrains;
 import models.RawModel;
 import renderEngine.ModelLoader;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 /**
  * This class represents the terrain of our game
@@ -15,12 +17,15 @@ public class Terrain {
 	private static final int VERTEX_COUNT = 128;
 	private float x, z;
 	private RawModel model;
-	private ModelTexture texture;
+	private TerrainTexturePack texturePack;
+	private TerrainTexture blendMap;
 
-	public Terrain(int xGrid, int zGrid, ModelLoader loader, ModelTexture texture) {
+	public Terrain(int xGrid, int zGrid, ModelLoader loader, 
+			TerrainTexturePack texturePack, TerrainTexture blendMap) {
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
 		this.x = xGrid*SIZE;
 		this.z = zGrid*SIZE;
-		this.texture = texture;
 		this.model = generateTerrain(loader);
 	}
 	
@@ -79,9 +84,14 @@ public class Terrain {
 		return model;
 	}
 
-	public ModelTexture getTexture() {
-		return texture;
+	public TerrainTexturePack getTexturePack() {
+		return texturePack;
 	}
+
+	public TerrainTexture getBlendMap() {
+		return blendMap;
+	}
+
 	
 	
 }
