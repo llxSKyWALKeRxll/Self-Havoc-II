@@ -60,8 +60,8 @@ public class Main {
 		ModelTexture flowerTexture1 = new ModelTexture(modelLoader.loadTexture("flowerTexture1"));
 		ModelTexture mainPlayerTexture1 = new ModelTexture(modelLoader.loadTexture("playerTexture"));
 		
-		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,texturePack,blendMap);
-		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,texturePack,blendMap);
+		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,texturePack,blendMap,"heightMap3");
+		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,texturePack,blendMap,"heightMap3");
 
 		TexturedModel treeTexturedModel1 = new TexturedModel(treeModel1, treeTexture1);
 		TexturedModel treeTexturedModel2 = new TexturedModel(treeModel2, treeTexture1);
