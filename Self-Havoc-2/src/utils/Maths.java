@@ -1,6 +1,7 @@
 package utils;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
@@ -52,6 +53,23 @@ public class Maths {
 				-cameraPosition.y, -cameraPosition.z);
 		Matrix4f.translate(negativeCameraPosition, viewMatrix, viewMatrix);
 		return viewMatrix;
+	}
+	
+	/**
+	 * Barrycentric method to calculate.
+	 * Can be used to calculate the height at any point on a triangle
+	 * @param p1
+	 * @param p2
+	 * @param p3
+	 * @param pos
+	 * @return
+	 */
+	public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
+		float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+		float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+		float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
+		float l3 = 1.0f - l1 - l2;
+		return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 	}
 
 }

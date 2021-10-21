@@ -61,7 +61,7 @@ public class Main {
 		ModelTexture mainPlayerTexture1 = new ModelTexture(modelLoader.loadTexture("playerTexture"));
 		
 		Terrain groundTerrain1 = new Terrain(0,-1,modelLoader,texturePack,blendMap,"heightMap3");
-		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,texturePack,blendMap,"heightMap3");
+//		Terrain groundTerrain2 = new Terrain(-1,-1,modelLoader,texturePack,blendMap,"heightMap3");
 
 		TexturedModel treeTexturedModel1 = new TexturedModel(treeModel1, treeTexture1);
 		TexturedModel treeTexturedModel2 = new TexturedModel(treeModel2, treeTexture1);
@@ -86,39 +86,71 @@ public class Main {
 		lightApplyTexture2.setShineDamper(10);
 		lightApplyTexture2.setReflectivity(1);
 		
-		Random random = new Random();
-		
 		List<Entity> treeModels = new ArrayList<Entity>();
 		List<Entity> grassModels = new ArrayList<Entity>();
 		List<Entity> bushModels = new ArrayList<Entity>();
 		List<Entity> flowerModels = new ArrayList<Entity>();
+		List<Entity> allEntities = new ArrayList<Entity>();
 		
-		for(int i=0; i<300; i++) {
-			float x = random.nextFloat()*300-230;
-			float y = 0;
-			float z = random.nextFloat()*-600;
-			treeModels.add(new Entity(treeTexturedModel1, new Vector3f(x,y,z), 0f,
-					0f, 0f, 0.2f));
-			x = random.nextFloat()*800-100;
-			y = 0;
-			z = random.nextFloat()*-300;
-			treeModels.add(new Entity(treeTexturedModel2, new Vector3f(x,y,z), 0f,
-					0f, 0f, 1.4f));
-			x = random.nextFloat()*500-230;
-			y = 0;
-			z = random.nextFloat()*-300;
-			grassModels.add(new Entity(grassTexturedModel1, new Vector3f(x,y,z), 0f,
-					0f, 0f, 0.4f));
-			x = random.nextFloat()*500-230;
-			y = 0;
-			z = random.nextFloat()*-300;
-			bushModels.add(new Entity(bushTexturedModel1, new Vector3f(x,y,z), 0f,
-					0f, 0f, 0.3f));
-			x = random.nextFloat()*600-300;
-			y = 0;
-			z = random.nextFloat()*-400;
-			flowerModels.add(new Entity(flowerTexturedModel1, new Vector3f(x,y,z), 0f,
-					0f, 0f, 0.8f));
+		Random random = new Random(676452);
+		
+		for(int i=0; i<600; i++) {
+			if(i%20 == 0) {
+				float x = random.nextFloat() * 800 - 400;
+				float z = random.nextFloat() * -600;
+				float y = groundTerrain1.getHeightOfTerrain(x, z);
+				allEntities.add(new Entity(bushTexturedModel1, new Vector3f(x,y,z), 0f,
+						random.nextFloat()*360, 0, 0.9f));
+				x = random.nextFloat() * 800 - 400;
+				z = random.nextFloat() * -600;
+				y = groundTerrain1.getHeightOfTerrain(x, z);
+				allEntities.add(new Entity(treeTexturedModel1, new Vector3f(x,y,z), 0f,
+						random.nextFloat()*360, 0, 0.6f));
+			}
+			if(i%5==0) {
+				float x = random.nextFloat() * 800 - 400;
+				float z = random.nextFloat() * -600;
+				float y = groundTerrain1.getHeightOfTerrain(x, z);
+				allEntities.add(new Entity(treeTexturedModel2, new Vector3f(x,y,z), 0f,
+						random.nextFloat()*360, 0, 3.9f));
+			}
+			if(i%7==0) {
+				float x = random.nextFloat() * 800 - 400;
+				float z = random.nextFloat() * -600;
+				float y = groundTerrain1.getHeightOfTerrain(x, z);
+				allEntities.add(new Entity(grassTexturedModel1, new Vector3f(x,y,z), 0f,
+						random.nextFloat()*360, 0, 0.6f));
+				x = random.nextFloat() * 800 - 400;
+				z = random.nextFloat() * -600;
+				y = groundTerrain1.getHeightOfTerrain(x, z);
+				allEntities.add(new Entity(flowerTexturedModel1, new Vector3f(x,y,z), 0f,
+						random.nextFloat()*360, 0, 0.6f));
+			}
+//			float x = random.nextFloat()*300-230;
+//			float y = 0;
+//			float z = random.nextFloat()*-600;
+//			treeModels.add(new Entity(treeTexturedModel1, new Vector3f(x,y,z), 0f,
+//					0f, 0f, 0.2f));
+//			x = random.nextFloat()*800-100;
+//			y = 0;
+//			z = random.nextFloat()*-300;
+//			treeModels.add(new Entity(treeTexturedModel2, new Vector3f(x,y,z), 0f,
+//					0f, 0f, 1.4f));
+//			x = random.nextFloat()*500-230;
+//			y = 0;
+//			z = random.nextFloat()*-300;
+//			grassModels.add(new Entity(grassTexturedModel1, new Vector3f(x,y,z), 0f,
+//					0f, 0f, 0.4f));
+//			x = random.nextFloat()*500-230;
+//			y = 0;
+//			z = random.nextFloat()*-300;
+//			bushModels.add(new Entity(bushTexturedModel1, new Vector3f(x,y,z), 0f,
+//					0f, 0f, 0.3f));
+//			x = random.nextFloat()*600-300;
+//			y = 0;
+//			z = random.nextFloat()*-400;
+//			flowerModels.add(new Entity(flowerTexturedModel1, new Vector3f(x,y,z), 0f,
+//					0f, 0f, 0.8f));
 		}
 		
 		Light light = new Light(new Vector3f(20000,40000,20000), new Vector3f(1,1,1));
@@ -135,11 +167,15 @@ public class Main {
 		while(!Display.isCloseRequested())
 		{
 			camera.move();
-			player.move();
+			player.move(groundTerrain1);
 			
 			renderer.processEntity(player);
 			renderer.processTerrain(groundTerrain1);
-			renderer.processTerrain(groundTerrain2);
+//			renderer.processTerrain(groundTerrain2);
+			
+			for(Entity entity: allEntities) {
+				renderer.processEntity(entity);
+			}
 			
 			for(Entity tree: treeModels) {
 				renderer.processEntity(tree);
